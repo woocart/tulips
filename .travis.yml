@@ -1,0 +1,18 @@
+language: python
+python:
+  - 3.6
+sudo: false
+cache:
+  pip: true
+  directories:
+    - .venv
+    - $HOME/.cache/pypoetry
+
+before_install:
+  - pip install poetry --pre
+  - poetry install -v
+
+install:
+- make
+script:
+- make test lint

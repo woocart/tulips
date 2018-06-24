@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "tulips"
+version = "0.1.5"
+description = "Wrapper around kubernetes-clients/python"
+authors = ["Janez Troha <dz0ny@ubuntu.si>"]
+license = "MIT"
+readme = 'README.md'
+
+repository = "https://github.com/dz0ny/tulips"
+homepage = "https://github.com/dz0ny/tulips"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+black = "^18.4-alpha.0"
+kubernetes = "^6.0"
+PyYAML = "^3.12"
+click = "^6.7"
+structlog = "^18.1"
+passlib = "^1.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.5"
+mypy = "^0.610.0"
+isort = "^4.3"
+flake8 = "^3.5"
+flake8-bugbear = "^18.2"
+pylint = "^1.9"
+
+[tool.black]
+line-length = 79
+py36 = true
+include = '\.pyi?$'
+
+[tool.poetry.scripts]
+tulip = "tulips:__main__.cli"
