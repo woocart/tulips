@@ -26,7 +26,7 @@ be extensible. So something like helm+kubectl with ability to write you own tool
 ```python
 
 import yaml
-from tulips import class_for_resource
+from tulips.resources import ResourceRegistry
 from kubernetes import client as k8s
 from kubernetes import config
 
@@ -35,11 +35,54 @@ client = config.new_client_from_config('kube.conf')
 
 spec = yaml.load('ingress.yaml')
 
-ingress_cls = class_for_resource(spec['kind'])
+ingress_cls = ResourceRegistry.get_cls(spec['kind'])
 ingress = ingress_cls(config.client, namespace='default', spec)
 ingress.create()  # Create Ingress resource
 ingress.delete()  # Delete Ingress resource
 ```
+
+## Adding new resource
+
+In order to add support for new Kubernetes resource, one needs to create class
+that inherits from `tulips.resources.Resource` class.
+
+### Example resource
+
+```python
+import tulips.resources.Resource
+
+class ClusterIssuer(Resource):
+    """A `cert-manager` ClusterIssuer resource."""
+
+    version = "v1alpha1"
+    group = "certmanager.k8s.io"
+    plural = "clusterissuers"
+
+    def delete(self, body: k8s.V1DeleteOptions):
+        return k8s.CustomObjectsApi(
+            self.client
+        ).delete_namespaced_custom_object(
+            body=body,
+            namespace=self.namespace,
+            version=self.version,
+            group=self.group,
+            plural=self.plural,
+            name=self.name,
+        )
+
+    def create(self):
+        return k8s.CustomObjectsApi(
+            self.client
+        ).create_namespaced_custom_object(
+            body=self.resource,
+            namespace=self.namespace,
+            version=self.version,
+            group=self.group,
+            plural=self.plural,
+        )
+```
+
+It will be registered into the `ResourceRegistry` and can be fetched via `ResourceRegistry.get_cls` method.
 
 ## Tulip
 
@@ -60,7 +103,7 @@ Options:
 
 ```
 
-### Example
+### Example client
 
 Let's say that I want to deploy a Secret and Ingress
 
@@ -68,36 +111,32 @@ Let's say that I want to deploy a Secret and Ingress
 apiVersion: v1
 kind: Secret
 metadata:
-  name: <%=release=%>-secrets
+  name: {{ release }}-secrets
 type: Opaque
 data:
-  password: <%=@pwd=%>
+  password: {{ @pwd }}
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: <%=release=%>-web-ingress
+  name: {{ release }}-web-ingress
   labels:
-    app: woocart-<%=release=%>
+    app: woocart-{{ release }}
   annotations:
     nginx.ingress.kubernetes.io/limit-connections: "100"
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: <%=domain=%>
+  - host: {{ domain }}
     http:
       paths:
         - path: /
           backend:
-            serviceName: <%=release=%>-web
+            serviceName: {{ release }}-web
             servicePort: 80
 ```
 
 If one runs `tulip --release test push --kubeconf kube.conf app.yaml domain=test.tld'
 
-Spec file is inspected and all `<%=variables=%>` are replaced with real values. Also
-special `<%=@pwd=%>` will generate strong password using `passlib` library.
-
-## TODO
-
-- [ ] Custom container for yaml(eliminates class_for_kind function)
+Spec file is inspected and all `{{ variables }}` are replaced with real values. Also
+special `{{ @pwd }}` will generate strong password using `passlib` library.

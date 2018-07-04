@@ -1,4 +1,4 @@
-from tulips import class_for_resource
+from tulips.resource import ResourceRegistry, UndefinedResource
 from tulips.resource.deployment import Deployment
 from tulips.resource.ingress import Ingress
 from tulips.resource.issuer import Issuer
@@ -11,15 +11,20 @@ class TestResource:
     """Unit tests for the `class_for_resource` function."""
 
     def test_instance_methods_can_be_called(self):
-        cls = class_for_resource("Ingress")
+        cls = ResourceRegistry.get_cls("Ingress")
         assert cls is Ingress
-        cls = class_for_resource("Deployment")
+        cls = ResourceRegistry.get_cls("Deployment")
         assert cls is Deployment
-        cls = class_for_resource("Service")
+        cls = ResourceRegistry.get_cls("Service")
         assert cls is Service
-        cls = class_for_resource("Secret")
+        cls = ResourceRegistry.get_cls("Secret")
         assert cls is Secret
-        cls = class_for_resource("Issuer")
+        cls = ResourceRegistry.get_cls("Issuer")
         assert cls is Issuer
-        cls = class_for_resource("PersistentVolumeClaim")
+        cls = ResourceRegistry.get_cls("PersistentVolumeClaim")
         assert cls is PersistentVolumeClaim
+
+        try:
+            ResourceRegistry.get_cls("Foo")
+        except UndefinedResource as e:
+            pass

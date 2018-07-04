@@ -28,11 +28,16 @@ def cli():
 @click.option(
     "--kubeconfig",
     help="Path to kubernetes config",
+    default="/home/dz0ny/.kube/config",
     type=click.Path(exists=True),
 )
 @click.pass_context
 def push(ctx, chart, namespace, release, kubeconfig):
-    options = {"release": release, "namespace": namespace, "chart": chart}
+    options = {
+        ".Release.Name": release,
+        "namespace": namespace,
+        "chart": chart,
+    }
     for item in ctx.args:
         options.update([item.split("=")])
     click.echo(options)
@@ -52,6 +57,37 @@ def push(ctx, chart, namespace, release, kubeconfig):
                 Resource=chart.__class__.__name__,
                 reason=e.reason,
             )
+
+
+@click.command(
+    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True),
+    help=(
+        "You can pass chart variables via foo=bar, "
+        "for example '$ tulip push app.yaml foo=bar'"
+    ),
+)
+@click.argument("chart", type=click.Path(exists=True))
+@click.option("--namespace", default="default", help="Kubernetes namespace")
+@click.option("--release", help="Name of the release")
+@click.option(
+    "--kubeconfig",
+    help="Path to kubernetes config",
+    default="/home/dz0ny/.kube/config",
+    type=click.Path(exists=True),
+)
+@click.pass_context
+def echo(ctx, chart, namespace, release, kubeconfig):
+    options = {
+        ".Release.Name": release,
+        "namespace": namespace,
+        "chart": chart,
+    }
+    for item in ctx.args:
+        options.update([item.split("=")])
+    click.echo(options)
+    client = Tulip(kubeconfig, namespace, options, chart)
+    for resource in client.resources():
+        click.echo(resource.resource)
 
 
 @click.command(
@@ -97,4 +133,5 @@ def rm(ctx, chart, namespace, release, kubeconfig):
 if __name__ == "__main__":
     cli.add_command(rm)
     cli.add_command(push)
+    cli.add_command(echo)
     cli()

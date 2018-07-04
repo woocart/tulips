@@ -1,15 +1,15 @@
 
-import io
+import base64
 import re
 import typing as t
+from pathlib import Path
 
 import yaml
 from kubernetes import client as k8s
 from kubernetes import config
 from passlib import pwd
 
-from tulips import class_for_resource
-from tulips.resource import Resource
+from tulips.resource import Resource, ResourceRegistry
 
 
 class Tulip:
@@ -21,7 +21,7 @@ class Tulip:
         Args:
             conf (str): Path to Kubernetes config.
             namespace (str): Kubernetes namespace.
-            meta (t.Dict): Spec variables
+            meta (t.Dict): Spec variables.
             spec_path (str): Location of chart to deploy.
         """
 
@@ -39,7 +39,7 @@ class Tulip:
 
         pattern = re.compile(r"^(.*)<%=(?:\s+)?(\S*)(?:\s+)?=%>(.*)$")
         yaml.add_implicit_resolver("!meta", pattern)
-        maps = {"@pwd": lambda: pwd.genword(length=16)}
+        maps = {"@pwd": lambda: base64.b64encode(pwd.genword(length=24))}
         maps.update(self.meta)
 
         def meta_constructor(loader, node):
@@ -51,8 +51,12 @@ class Tulip:
             return start + val + end
 
         yaml.add_constructor("!meta", meta_constructor)
-        with io.open(self.spec_path) as f:
-            for spec in yaml.load_all(f.read()):
-                yield class_for_resource(spec["kind"])(
+        path = Path(self.spec_path).joinpath("templates")
+        for f in path.glob("*.yaml"):
+            # yaml parser trips at {{}} so we replace it with custom
+            # constructor
+            text = f.read_text().replace("{{", "<%=").replace("}}", "=%>")
+            for spec in yaml.load_all(text):
+                yield ResourceRegistry.get_cls(spec["kind"])(
                     self.client, self.namespace, spec
                 )
