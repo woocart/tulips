@@ -13,3 +13,10 @@ class Ingress(Resource):
         return k8s.ExtensionsV1beta1Api(self.client).create_namespaced_ingress(
             body=self.resource, namespace=self.namespace
         )
+
+    def status(self):
+        return k8s.ExtensionsV1beta1Api(
+            self.client
+        ).read_namespaced_ingress_status(
+            name=self.name, namespace=self.namespace
+        )

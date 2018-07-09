@@ -7,3 +7,4 @@ from tulips.resource.persistentvolumeclaim import (  # noqa: F401
 from tulips.resource.secret import Secret  # noqa: F401
 from tulips.resource.service import Service  # noqa: F401
 from tulips.resource.statefullset import StatefulSet  # noqa: F401
+from tulips.resource.configmap import ConfigMap  # noqa: F401

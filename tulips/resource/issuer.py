@@ -32,3 +32,14 @@ class Issuer(Resource):
             group=self.group,
             plural=self.plural,
         )
+
+    def status(self):
+        return k8s.CustomObjectsApi(
+            self.client
+        ).get_namespaced_custom_object(
+            name=self.name,
+            namespace=self.namespace,
+            version=self.version,
+            group=self.group,
+            plural=self.plural,
+        )

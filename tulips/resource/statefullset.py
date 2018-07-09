@@ -13,3 +13,8 @@ class StatefulSet(Resource):
         return k8s.AppsV1Api(self.client).create_namespaced_stateful_set(
             body=self.resource, namespace=self.namespace
         )
+
+    def status(self):
+        return k8s.AppsV1Api(self.client).read_namespaced_stateful_set_status(
+            name=self.name, namespace=self.namespace
+        )

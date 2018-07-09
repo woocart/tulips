@@ -17,3 +17,10 @@ class PersistentVolumeClaim(Resource):
         ).create_namespaced_persistent_volume_claim(
             body=self.resource, namespace=self.namespace
         )
+
+    def status(self):
+        return k8s.CoreV1Api(
+            self.client
+        ).read_namespaced_persistent_volume_claim_status(
+            name=self.name, namespace=self.namespace
+        )

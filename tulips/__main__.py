@@ -76,6 +76,44 @@ def push(ctx, chart, namespace, release, kubeconfig):
     type=click.Path(exists=True),
 )
 @click.pass_context
+def status(ctx, chart, namespace, release, kubeconfig):
+    options = {
+        ".Release.Name": release,
+        "namespace": namespace,
+        "chart": chart,
+    }
+    for item in ctx.args:
+        options.update([item.split("=")])
+    client = Tulip(kubeconfig, namespace, options, chart)
+    for resource in client.resources():
+        try:
+            click.echo(resource.status())
+        except ApiException as e:
+            log.error(
+                "Failed getting info",
+                name=resource.name,
+                Resource=chart.__class__.__name__,
+                reason=e.reason,
+            )
+
+
+@click.command(
+    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True),
+    help=(
+        "You can pass chart variables via foo=bar, "
+        "for example '$ tulip push app.yaml foo=bar'"
+    ),
+)
+@click.argument("chart", type=click.Path(exists=True))
+@click.option("--namespace", default="default", help="Kubernetes namespace")
+@click.option("--release", help="Name of the release")
+@click.option(
+    "--kubeconfig",
+    help="Path to kubernetes config",
+    default="/home/dz0ny/.kube/config",
+    type=click.Path(exists=True),
+)
+@click.pass_context
 def echo(ctx, chart, namespace, release, kubeconfig):
     options = {
         ".Release.Name": release,
@@ -134,4 +172,5 @@ if __name__ == "__main__":
     cli.add_command(rm)
     cli.add_command(push)
     cli.add_command(echo)
+    cli.add_command(status)
     cli()

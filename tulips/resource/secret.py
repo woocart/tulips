@@ -13,3 +13,8 @@ class Secret(Resource):
         return k8s.CoreV1Api(self.client).create_namespaced_secret(
             body=self.resource, namespace=self.namespace
         )
+
+    def status(self):
+        return k8s.CoreV1Api(self.client).read_namespaced_secret(
+            name=self.name, namespace=self.namespace
+        )
