@@ -1,5 +1,5 @@
 [[package]]
-category = "main"
+category = "dev"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 name = "appdirs"
 optional = false
@@ -31,7 +31,7 @@ python-versions = "*"
 version = "1.1.5"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Classes Without Boilerplate"
 name = "attrs"
 optional = false
@@ -40,7 +40,7 @@ python-versions = "*"
 version = "18.1.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "The uncompromising code formatter."
 name = "black"
 optional = false
@@ -434,7 +434,7 @@ version = "18.1.0"
 six = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -482,7 +482,7 @@ python-versions = "*"
 version = "1.10.11"
 
 [metadata]
-content-hash = "fa9817cc816220d9f8a5bdcc28a6a9f03f2ed806902d140315c34dd110c21955"
+content-hash = "c9dd6f3460a9a6f58335678632e1df1434276c73b1b7b9bfc4391cb97b3786a7"
 platform = "*"
 python-versions = "^3.6"
 

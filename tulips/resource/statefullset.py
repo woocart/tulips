@@ -1,4 +1,5 @@
 from kubernetes import client as k8s
+from kubernetes.client.models.v1_stateful_set import V1StatefulSet
 
 from . import Resource
 
@@ -9,12 +10,12 @@ class StatefulSet(Resource):
             body=body, namespace=self.namespace, name=self.name
         )
 
-    def create(self):
+    def create(self) -> V1StatefulSet:
         return k8s.AppsV1Api(self.client).create_namespaced_stateful_set(
             body=self.resource, namespace=self.namespace
         )
 
-    def status(self):
+    def status(self) -> V1StatefulSet:
         return k8s.AppsV1Api(self.client).read_namespaced_stateful_set_status(
             name=self.name, namespace=self.namespace
         )
