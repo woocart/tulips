@@ -71,8 +71,13 @@ class Resource(metaclass=ResourceRegistry):
         pass
 
     @abc.abstractmethod
-    def delete(self, options: k8s.V1DeleteOptions):
+    def delete(self, body: k8s.V1DeleteOptions):
         """Delete Resource."""
+        pass
+
+    @abc.abstractmethod
+    def status(self):
+        """Info about Resource."""
         pass
 
     @property
