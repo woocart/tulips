@@ -8,7 +8,7 @@ class CronJob(Resource):
     def delete(self, body: k8s.V1DeleteOptions):
         return k8s.BatchV1beta1Api(
             self.client
-        ).delete_collection_namespaced_cron_job(
+        ).delete_namespaced_cron_job(
             body=body, namespace=self.namespace, name=self.name
         )
 
