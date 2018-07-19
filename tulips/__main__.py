@@ -7,7 +7,7 @@ from tulip import Tulip
 
 log = structlog.get_logger("tulip")
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 @click.group()
@@ -87,7 +87,7 @@ def status(ctx, chart, namespace, release, kubeconfig):
     client = Tulip(kubeconfig, namespace, options, chart)
     for resource in client.resources():
         try:
-            click.echo(resource.status())
+            click.echo(resource.status().status)
         except ApiException as e:
             log.error(
                 "Failed getting info",
