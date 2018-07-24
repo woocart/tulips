@@ -31,6 +31,7 @@ lint: install
 
 .PHONY: test
 test: install
+	@find . -name "__pycache__" -type d | xargs rm -rf
 	poetry run pytest
 
 .PHONY: watch

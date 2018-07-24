@@ -1,9 +1,10 @@
 import click
 import structlog
+import yaml
 from kubernetes import client as k8s
 from kubernetes.client.rest import ApiException
 
-from tulip import Tulip
+from .tulip import Tulip
 
 log = structlog.get_logger("tulip")
 
@@ -125,7 +126,7 @@ def echo(ctx, chart, namespace, release, kubeconfig):
     click.echo(options)
     client = Tulip(kubeconfig, namespace, options, chart)
     for resource in client.resources():
-        click.echo(resource.resource)
+        click.echo(yaml.dump(resource.resource))
 
 
 @click.command(
