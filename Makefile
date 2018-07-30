@@ -1,17 +1,16 @@
 PACKAGES := tulips tests
 
+hash := $(word 1, $(shell grep -i  content-hash pyproject.lock | shasum))
+
 .PHONY: all
 all: install
 
 .PHONY: install
-install: .venv/flag
-.venv/flag: pyproject.lock
+install: .venv/$(hash)
+.venv/$(hash):
 	@ poetry config settings.virtualenvs.in-project true
 	poetry develop
 	@ touch $@
-
-pyproject.lock: pyproject.toml
-	poetry lock
 
 .PHONY: fmt
 fmt: install
@@ -32,7 +31,7 @@ lint: install
 .PHONY: test
 test: install
 	@find . -name "__pycache__" -type d | xargs rm -rf
-	poetry run pytest
+	poetry run pytest --cov=tulips
 
 .PHONY: watch
 watch: install

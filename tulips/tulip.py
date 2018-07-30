@@ -30,6 +30,10 @@ class Tulip:
         self.spec_path = spec_path
         self.client: k8s.ApiClient = config.new_client_from_config(conf)
 
+    def create_namespace(self):
+        from k8s import V1Namespace
+
+
     def resources(self) -> t.Iterator[Resource]:
         """Deployment specification.
 
