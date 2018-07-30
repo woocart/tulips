@@ -30,9 +30,32 @@ class Tulip:
         self.spec_path = spec_path
         self.client: k8s.ApiClient = config.new_client_from_config(conf)
 
-    def create_namespace(self):
-        from k8s import V1Namespace
+    def create_namespace(self) -> k8s.V1NamespaceStatus:
+        """Create namespace.
 
+        Returns:
+            k8s.V1NamespaceStatus
+        """
+
+        body = k8s.V1Namespace(
+            metadata=k8s.V1ObjectMeta(
+                name=self.namespace, labels={"store_id": self.namespace}
+            )
+        )
+        return k8s.CoreV1Api(self.client).create_namespace(body)
+
+    def delete_namespace(self) -> k8s.V1NamespaceStatus:
+        """Delete namespace.
+
+        Returns:
+            k8s.V1NamespaceStatus
+        """
+        body = k8s.V1DeleteOptions(
+            propagation_policy="Foreground", grace_period_seconds=5
+        )
+        return k8s.CoreV1Api(self.client).delete_namespace(
+            self.namespace, body
+        )
 
     def resources(self) -> t.Iterator[Resource]:
         """Deployment specification.

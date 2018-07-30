@@ -10,7 +10,6 @@ cache:
 
 before_install:
   - pip install poetry --pre
-  - poetry install -v
 
 install:
 - make

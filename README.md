@@ -2,6 +2,8 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Type checker: mypy](https://img.shields.io/badge/type%20checker-mypy-1F5082.svg)](https://github.com/python/mypy)
 [![Packaging: poetry](https://img.shields.io/badge/packaging-poetry-C2CAFD.svg)](https://poetry.eustace.io/)
+[![Packaging: poetry](https://img.shields.io/badge/packaging-pypi-006dad.svg)](https://pypi.org/project/tulips/)
+[![codecov](https://codecov.io/gh/dz0ny/tulips/branch/master/graph/badge.svg)](https://codecov.io/gh/dz0ny/tulips)
 
 # Tulips
 
