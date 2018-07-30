@@ -5,13 +5,15 @@ sudo: false
 cache:
   pip: true
   directories:
-    - .venv
     - $HOME/.cache/pypoetry
 
 before_install:
-  - pip install poetry --pre
+  - pip install poetry==0.11.2
+  - poetry config settings.virtualenvs.in-project true
+  - mkdir -p .venv
 
 install:
-- make
+- make install
 script:
 - make test lint
+- codecov

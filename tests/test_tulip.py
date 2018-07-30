@@ -1,8 +1,8 @@
 import unittest.mock as mock
 
-from tulips.tulip import Tulip
-
 from kubernetes import client as k8s
+
+from tulips.tulip import Tulip
 
 
 class TestTulip:
