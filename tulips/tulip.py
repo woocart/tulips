@@ -87,13 +87,21 @@ class Tulip:
 
         yaml.add_constructor("!meta", meta_constructor)
         path = Path(self.spec_path).joinpath("templates")
+        processed: list = []
         for res in path.glob("*.yaml"):
             base_name = str(res)[:-5]  # strip .yaml
             override = Path(f"{base_name}.{self.override}.yaml")
 
             # use override if it is found else use original file
             source_file = override if override.is_file() else res
+            processed_file = str(source_file)
+
+            # if override was processed already,
+            # skip it
+            if processed_file in processed:
+                continue
             text = self.prepare(source_file)
+            processed.append(processed_file)
             for spec in yaml.load_all(text):
                 yield ResourceRegistry.get_cls(spec["kind"])(
                     self.client, self.namespace, spec, source_file
