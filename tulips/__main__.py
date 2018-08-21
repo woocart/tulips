@@ -169,9 +169,13 @@ def rm(ctx, chart, namespace, release, kubeconfig):
             )
 
 
-if __name__ == "__main__":
+def main():
     cli.add_command(rm)
     cli.add_command(push)
     cli.add_command(echo)
     cli.add_command(status)
     cli()
+
+
+if __name__ == "__main__":
+    main()

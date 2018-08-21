@@ -5,9 +5,12 @@
     "python.linting.flake8Enabled": true,
     "python.linting.mypyEnabled": true,
     "python.unitTest.pyTestArgs": [
-        "tests"
+        "tests",
+        "--ignore=.venv"
     ],
     "python.unitTest.unittestEnabled": false,
     "python.unitTest.nosetestsEnabled": false,
-    "python.unitTest.pyTestEnabled": true
+    "python.unitTest.pyTestEnabled": true,
+    "python.autoComplete.addBrackets": true,
+    "python.jediEnabled": false
 }

@@ -51,7 +51,11 @@ class Resource(metaclass=ResourceRegistry):
     namespace: str
 
     def __init__(
-        self, client: k8s.ApiClient, namespace: str, resource: dict
+        self,
+        client: k8s.ApiClient,
+        namespace: str,
+        resource: dict,
+        source_file: str,
     ) -> None:
         """Initializes resource or CRD.
 
@@ -59,11 +63,14 @@ class Resource(metaclass=ResourceRegistry):
             client (k8s.ApiClient): Instance of the Kubernetes client.
             namespace (str): Namespace where Workload should be deployed.
             resource (dict): Kubernetes resource or CRD.
+            source_file (str): Source file from which this resource was
+              generated from.
         """
 
         self.client = client
         self.namespace = namespace
         self.resource = resource
+        self.source_file = resource
 
     @abc.abstractmethod
     def create(self):

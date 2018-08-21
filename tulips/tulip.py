@@ -14,7 +14,12 @@ from tulips.resource import Resource, ResourceRegistry
 
 class Tulip:
     def __init__(
-        self, conf: str, namespace: str, meta: t.Dict, spec_path: str
+        self,
+        conf: str,
+        namespace: str,
+        meta: t.Dict,
+        spec_path: str,
+        override: str = "",
     ) -> None:
         """Manages deployment.
 
@@ -23,12 +28,15 @@ class Tulip:
             namespace (str): Kubernetes namespace.
             meta (t.Dict): Spec variables.
             spec_path (str): Location of chart to deploy.
+            override (str): Override specific resource file, defaults to
+             `resource.override.yaml` where one has `resource.yaml`.
         """
 
+        self.client: k8s.ApiClient = config.new_client_from_config(conf)
         self.meta = meta
         self.namespace = namespace
+        self.override = override if override else "override"
         self.spec_path = spec_path
-        self.client: k8s.ApiClient = config.new_client_from_config(conf)
 
     def create_namespace(self) -> k8s.V1NamespaceStatus:
         """Create namespace.
@@ -79,11 +87,26 @@ class Tulip:
 
         yaml.add_constructor("!meta", meta_constructor)
         path = Path(self.spec_path).joinpath("templates")
-        for f in path.glob("*.yaml"):
-            # yaml parser trips at {{}} so we replace it with custom
-            # constructor
-            text = f.read_text().replace("{{", "<%=").replace("}}", "=%>")
+        for res in path.glob("*.yaml"):
+            base_name = str(res)[:-5]  # strip .yaml
+            override = Path(f"{base_name}.{self.override}.yaml")
+
+            # use override if it is found else use original file
+            source_file = override if override.is_file() else res
+            text = self.prepare(source_file)
             for spec in yaml.load_all(text):
                 yield ResourceRegistry.get_cls(spec["kind"])(
-                    self.client, self.namespace, spec
+                    self.client, self.namespace, spec, source_file
                 )
+
+    def prepare(self, f: Path) -> str:
+        """Yaml parser trips at {{}} so we replace it with custom constructor.
+
+        Arguments:
+            f {Path} -- Path instance.
+
+        Returns:
+            str -- Updated yaml string of the resource.
+        """
+
+        return f.read_text().replace("{{", "<%=").replace("}}", "=%>")
