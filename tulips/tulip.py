@@ -33,6 +33,13 @@ class Tulip:
         """
 
         self.client: k8s.ApiClient = config.new_client_from_config(conf)
+
+        # Disable threadding pool inside swagger client
+        # because it causes problems with other multithreading workers
+        # as we don't use any async calls we are safe to do so.
+        self.client.__del__()
+        self.client.pool = None
+
         self.meta = meta
         self.namespace = namespace
         self.override = override if override else "override"
