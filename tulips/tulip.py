@@ -37,7 +37,8 @@ class Tulip:
         # Disable threadding pool inside swagger client
         # because it causes problems with other multithreading workers
         # as we don't use any async calls we are safe to do so.
-        self.client.__del__()
+        self.client.pool.close()
+        self.client.pool.join()
         self.client.pool = None
 
         self.meta = meta
@@ -98,7 +99,8 @@ class Tulip:
         for res in path.glob("*.yaml"):
             base_name = str(res.name)[:-5]  # strip .yaml
             override = res.parent.joinpath(
-                "overrides", f"{base_name}.{self.override}.yaml")
+                "overrides", f"{base_name}.{self.override}.yaml"
+            )
             # use override if it is found else use original file
             source_file = override if override.is_file() else res
 
