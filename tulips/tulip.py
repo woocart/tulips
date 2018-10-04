@@ -1,4 +1,3 @@
-
 import base64
 import re
 import typing as t
@@ -39,7 +38,6 @@ class Tulip:
         # as we don't use any async calls we are safe to do so.
         self.client.pool.close()
         self.client.pool.join()
-        self.client.pool = None
 
         self.meta = meta
         self.namespace = namespace
