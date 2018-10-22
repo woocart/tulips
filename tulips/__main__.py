@@ -29,7 +29,7 @@ def cli():
 @click.option(
     "--kubeconfig",
     help="Path to kubernetes config",
-    default="/home/dz0ny/.kube/config",
+    default="$HOME/.kube/config",
     type=click.Path(exists=True),
 )
 @click.pass_context
@@ -73,7 +73,7 @@ def push(ctx, chart, namespace, release, kubeconfig):
 @click.option(
     "--kubeconfig",
     help="Path to kubernetes config",
-    default="/home/dz0ny/.kube/config",
+    default="$HOME/.kube/config",
     type=click.Path(exists=True),
 )
 @click.pass_context
@@ -111,7 +111,7 @@ def status(ctx, chart, namespace, release, kubeconfig):
 @click.option(
     "--kubeconfig",
     help="Path to kubernetes config",
-    default="/home/dz0ny/.kube/config",
+    default="$HOME/.kube/config",
     type=click.Path(exists=True),
 )
 @click.pass_context
@@ -123,10 +123,11 @@ def echo(ctx, chart, namespace, release, kubeconfig):
     }
     for item in ctx.args:
         options.update([item.split("=")])
-    click.echo(options)
+    click.echo(f"### meta={options}")
     client = Tulip(kubeconfig, namespace, options, chart)
     for resource in client.resources():
         click.echo(yaml.dump(resource.resource))
+        click.echo("---")
 
 
 @click.command(
