@@ -44,6 +44,7 @@ def test_resources(mocker):
         r.create()
         r.delete(body=delme)
         r.status()
+        r.patch()
 
     assert order == ['my-secrets', 'test-volume']
 
@@ -52,7 +53,7 @@ def test_parsing(mocker):
     mocker.patch("kubernetes.config.new_client_from_config")
 
     t = Tulip("conf", "my_namespace", {}, "fixtures")
-    out = t.prepare(Path("./tests/fixtures/parse.yaml"), {".test.var": "foo"})
+    out = t.prepare(Path("./tests/fixtures/parse.yaml"), {".test.var": 1234})
 
     assert ".test.var" not in out
-    assert "foo" in out
+    assert '"1234"' in out

@@ -116,6 +116,6 @@ class Tulip:
             val = maps[name]
             if name.startswith("@"):
                 val = val()
-            return val
+            return str(val)
 
         return re.sub(pattern, replace, text)
