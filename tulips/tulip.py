@@ -78,20 +78,8 @@ class Tulip:
             t.Iterator[Resource]: Iterator over specifications
         """
 
-        pattern = re.compile(r"^(.*)<%=(?:\s+)?(\S*)(?:\s+)?=%>(.*)$")
-        yaml.add_implicit_resolver("!meta", pattern)
         maps = {"@pwd": lambda: base64.b64encode(pwd.genword(length=24))}
         maps.update(self.meta)
-
-        def meta_constructor(loader, node):
-            value = loader.construct_scalar(node)
-            start, name, end = pattern.match(value).groups()
-            val = maps[name]
-            if name.startswith("@"):
-                val = val()
-            return start + val + end
-
-        yaml.add_constructor("!meta", meta_constructor)
         path = Path(self.spec_path).joinpath("templates")
 
         for res in path.glob("*.yaml"):
@@ -102,20 +90,31 @@ class Tulip:
             # use override if it is found else use original file
             source_file = override if override.is_file() else res
 
-            text = self.prepare(source_file)
+            text = self.prepare(source_file, maps)
             for spec in yaml.load_all(text):
                 yield ResourceRegistry.get_cls(spec["kind"])(
                     self.client, self.namespace, spec, source_file
                 )
 
-    def prepare(self, f: Path) -> str:
-        """Yaml parser trips at {{}} so we replace it with custom constructor.
+    def prepare(self, f: Path, maps: dict) -> str:
+        """Replace {{}} with values passed from dictionary.
 
         Arguments:
-            f {Path} -- Path instance.
+            f {Path} -- Path to the file.
+            maps {dict} -- Mappings to be replaced.
 
         Returns:
             str -- Updated yaml string of the resource.
         """
 
-        return f.read_text().replace("{{", "<%=").replace("}}", "=%>")
+        text: str = f.read_text()
+        pattern = re.compile(r"{{(?:\s+)?(.*)(?:\s+)?}}")
+
+        def replace(match):
+            name = match.groups()[0].strip()
+            val = maps[name]
+            if name.startswith("@"):
+                val = val()
+            return val
+
+        return re.sub(pattern, replace, text)

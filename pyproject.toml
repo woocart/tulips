@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tulips"
-version = "1.2.2"
+version = "1.2.3"
 description = "Wrapper around kubernetes-clients/python"
 authors = ["Janez Troha <dz0ny@ubuntu.si>"]
 license = "MIT"
@@ -27,6 +27,7 @@ pylint = "^1.9"
 black = "^18.4-alpha.0"
 codecov = "^2.0"
 pytest-cov = "^2.5"
+pytest-mock = "^1.10"
 
 [tool.black]
 line-length = 79

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .test.var }}
+  labels:
+    app: {{.test.var}}
+spec:
+  storageClassName: {{.test.var }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .test.var}}
