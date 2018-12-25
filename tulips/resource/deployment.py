@@ -18,3 +18,8 @@ class Deployment(Resource):
         return k8s.AppsV1Api(self.client).read_namespaced_stateful_set_status(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self):
+        return k8s.AppsV1Api(self.client).patch_namespaced_deployment(
+            name=self.name, body=self.resource, namespace=self.namespace
+        )

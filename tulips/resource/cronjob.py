@@ -21,3 +21,8 @@ class CronJob(Resource):
         ).read_namespaced_cron_job_status(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self):
+        return k8s.BatchV1beta1Api(self.client).patch_namespaced_cron_job(
+            name=self.name, body=self.resource, namespace=self.namespace
+        )

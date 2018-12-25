@@ -20,3 +20,8 @@ class Ingress(Resource):
         ).read_namespaced_ingress_status(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self):
+        return k8s.ExtensionsV1beta1Api(self.client).patch_namespaced_ingress(
+            name=self.name, body=self.resource, namespace=self.namespace
+        )

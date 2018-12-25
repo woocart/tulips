@@ -18,3 +18,8 @@ class Secret(Resource):
         return k8s.CoreV1Api(self.client).read_namespaced_secret(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self):
+        return k8s.CoreV1Api(self.client).patch_namespaced_secret(
+            body=self.resource, name=self.name, namespace=self.namespace
+        )

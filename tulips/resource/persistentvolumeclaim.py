@@ -24,3 +24,10 @@ class PersistentVolumeClaim(Resource):
         ).read_namespaced_persistent_volume_claim_status(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self):
+        return k8s.CoreV1Api(
+            self.client
+        ).patch_namespaced_persistent_volume_claim_status(
+            body=self.resource, name=self.name, namespace=self.namespace
+        )

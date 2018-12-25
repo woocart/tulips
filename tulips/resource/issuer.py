@@ -41,3 +41,15 @@ class Issuer(Resource):
             group=self.group,
             plural=self.plural,
         )
+
+    def patch(self):
+        return k8s.CustomObjectsApi(
+            self.client
+        ).patch_namespaced_custom_object(
+            body=self.resource,
+            name=self.name,
+            namespace=self.namespace,
+            version=self.version,
+            group=self.group,
+            plural=self.plural,
+        )

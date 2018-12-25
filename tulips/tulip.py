@@ -71,7 +71,7 @@ class Tulip:
             self.namespace, body
         )
 
-    def resources(self) -> t.Iterator[Resource]:
+    def resources(self, only_resource=None) -> t.Iterator[Resource]:
         """Deployment specification.
 
         Returns:
@@ -93,9 +93,13 @@ class Tulip:
 
             text = self.prepare(source_file, maps)
             for spec in yaml.load_all(text):
-                yield ResourceRegistry.get_cls(spec["kind"])(
-                    self.client, self.namespace, spec, source_file
-                )
+                cls = ResourceRegistry.get_cls(spec["kind"])
+
+                # Skip if resource in defined in only_resource
+                if only_resource and cls not in only_resource:
+                    continue
+
+                yield cls(self.client, self.namespace, spec, source_file)
 
     def prepare(self, f: Path, maps: dict) -> str:
         """Replace {{}} with values passed from dictionary.
