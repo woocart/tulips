@@ -19,3 +19,8 @@ class Job(Resource):
         return k8s.BatchV1Api(self.client).read_namespaced_job_status(
             name=self.name, namespace=self.namespace
         )
+
+    def patch(self) -> V1Job:
+        return k8s.BatchV1Api(self.client).patch_namespaced_job_status(
+            body=self.resource, name=self.name, namespace=self.namespace
+        )

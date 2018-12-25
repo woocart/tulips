@@ -1,7 +1,8 @@
+from pathlib import Path
+
 from kubernetes import client as k8s
 
 from tulips.tulip import Tulip
-from pathlib import Path
 
 
 def test_create_namespace(mocker):
