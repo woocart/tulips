@@ -15,6 +15,11 @@ class StatefulSet(Resource):
             body=self.resource, namespace=self.namespace
         )
 
+    def read(self) -> V1StatefulSet:
+        return k8s.AppsV1Api(self.client).read_namespaced_stateful_set(
+            name=self.name, namespace=self.namespace
+        )
+
     def status(self) -> V1StatefulSet:
         return k8s.AppsV1Api(self.client).read_namespaced_stateful_set_status(
             name=self.name, namespace=self.namespace

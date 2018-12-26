@@ -14,6 +14,11 @@ class Service(Resource):
             body=self.resource, namespace=self.namespace
         )
 
+    def read(self):
+        return k8s.CoreV1Api(self.client).read_namespaced_service(
+            name=self.name, namespace=self.namespace
+        )
+
     def status(self):
         return k8s.CoreV1Api(self.client).read_namespaced_service_status(
             name=self.name, namespace=self.namespace

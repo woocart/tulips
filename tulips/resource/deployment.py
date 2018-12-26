@@ -14,7 +14,7 @@ class Deployment(Resource):
             body=self.resource, namespace=self.namespace
         )
 
-    def status(self):
+    def read(self):
         return k8s.AppsV1Api(self.client).read_namespaced_stateful_set_status(
             name=self.name, namespace=self.namespace
         )

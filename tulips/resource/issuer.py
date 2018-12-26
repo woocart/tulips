@@ -33,7 +33,7 @@ class Issuer(Resource):
             plural=self.plural,
         )
 
-    def status(self):
+    def read(self):
         return k8s.CustomObjectsApi(self.client).get_namespaced_custom_object(
             name=self.name,
             namespace=self.namespace,

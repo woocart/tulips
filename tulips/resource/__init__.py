@@ -70,11 +70,16 @@ class Resource(metaclass=ResourceRegistry):
         self.client = client
         self.namespace = namespace
         self.resource = resource
-        self.source_file = resource
+        self.source_file = source_file
 
     @abc.abstractmethod
     def create(self):
         """Create Resource."""
+        pass
+
+    @abc.abstractmethod
+    def patch(self):
+        """Patch Resource."""
         pass
 
     @abc.abstractmethod
@@ -83,8 +88,8 @@ class Resource(metaclass=ResourceRegistry):
         pass
 
     @abc.abstractmethod
-    def status(self):
-        """Info about Resource."""
+    def read(self):
+        """Read Resource."""
         pass
 
     @property

@@ -29,6 +29,8 @@ lint: install
 	poetry run mypy $(PACKAGES)
 	poetry run flake8 $(PACKAGES)
 
+.PHONY: unit
+unit:test
 .PHONY: test
 test: install
 	@find . -name "__pycache__" -type d | xargs rm -rf
