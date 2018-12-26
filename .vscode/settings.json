@@ -12,5 +12,6 @@
     "python.unitTest.nosetestsEnabled": false,
     "python.unitTest.pyTestEnabled": true,
     "python.autoComplete.addBrackets": true,
-    "python.jediEnabled": false
+    "python.jediEnabled": false,
+    "python.linting.pylintEnabled": false
 }

@@ -21,6 +21,11 @@ class Ingress(Resource):
             name=self.name, namespace=self.namespace
         )
 
+    def read(self):
+        return k8s.ExtensionsV1beta1Api(self.client).read_namespaced_ingress(
+            name=self.name, namespace=self.namespace
+        )
+
     def patch(self):
         return k8s.ExtensionsV1beta1Api(self.client).patch_namespaced_ingress(
             name=self.name, body=self.resource, namespace=self.namespace

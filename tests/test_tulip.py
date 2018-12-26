@@ -44,7 +44,7 @@ def test_resources(mocker):
         order.append(r.name)
         r.create()
         r.delete(body=delme)
-        r.status()
+        r.read()
         r.patch()
 
     assert order == ['my-secrets', 'test-volume']
@@ -57,4 +57,4 @@ def test_parsing(mocker):
     out = t.prepare(Path("./tests/fixtures/parse.yaml"), {".test.var": 1234})
 
     assert ".test.var" not in out
-    assert '"1234"' in out
+    assert "1234" in out
