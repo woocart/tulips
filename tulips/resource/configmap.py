@@ -20,6 +20,6 @@ class ConfigMap(Resource):
         )
 
     def read(self):
-        return k8s.CoreV1Api(self.client).patch_namespaced_config_map(
-            name=self.name, body=self.resource, namespace=self.namespace
+        return k8s.CoreV1Api(self.client).read_namespaced_config_map(
+            name=self.name, namespace=self.namespace
         )

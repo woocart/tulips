@@ -7,7 +7,6 @@ import yaml
 from kubernetes import client as k8s
 from kubernetes import config
 from passlib import pwd
-
 from tulips.resource import Resource, ResourceRegistry
 
 
