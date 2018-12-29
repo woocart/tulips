@@ -10,30 +10,36 @@ from tulips.resource.service import Service
 from tulips.resource.statefullset import StatefulSet
 
 
-class TestResource:
-    """Unit tests for the `class_for_resource` function."""
+def test_instance_methods_can_be_called(k8s_client):
+    cls = ResourceRegistry.get_cls("Ingress")
+    assert cls is Ingress
+    cls = ResourceRegistry.get_cls("Deployment")
+    assert cls is Deployment
+    cls = ResourceRegistry.get_cls("Service")
+    assert cls is Service
+    cls = ResourceRegistry.get_cls("Secret")
+    assert cls is Secret
+    cls = ResourceRegistry.get_cls("Issuer")
+    assert cls is Issuer
+    cls = ResourceRegistry.get_cls("PersistentVolumeClaim")
+    assert cls is PersistentVolumeClaim
+    cls = ResourceRegistry.get_cls("StatefulSet")
+    assert cls is StatefulSet
+    cls = ResourceRegistry.get_cls("CronJob")
+    assert cls is CronJob
+    cls = ResourceRegistry.get_cls("ConfigMap")
+    assert cls is ConfigMap
 
-    def test_instance_methods_can_be_called(self):
-        cls = ResourceRegistry.get_cls("Ingress")
-        assert cls is Ingress
-        cls = ResourceRegistry.get_cls("Deployment")
-        assert cls is Deployment
-        cls = ResourceRegistry.get_cls("Service")
-        assert cls is Service
-        cls = ResourceRegistry.get_cls("Secret")
-        assert cls is Secret
-        cls = ResourceRegistry.get_cls("Issuer")
-        assert cls is Issuer
-        cls = ResourceRegistry.get_cls("PersistentVolumeClaim")
-        assert cls is PersistentVolumeClaim
-        cls = ResourceRegistry.get_cls("StatefulSet")
-        assert cls is StatefulSet
-        cls = ResourceRegistry.get_cls("CronJob")
-        assert cls is CronJob
-        cls = ResourceRegistry.get_cls("ConfigMap")
-        assert cls is ConfigMap
+    try:
+        ResourceRegistry.get_cls("Foo")
+    except UndefinedResource as e:
+        pass
 
-        try:
-            ResourceRegistry.get_cls("Foo")
-        except UndefinedResource as e:
-            pass
+
+def test_all_calls(k8s_client):
+    for cls in ResourceRegistry.REGISTRY.values():
+        res = cls(k8s_client, "foo", {"metadata": {"name": "foo"}}, "file")
+        res.read()
+        res.patch()
+        res.delete("")
+        res.create()

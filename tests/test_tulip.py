@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from kubernetes import client as k8s
-
 from tulips.tulip import Tulip
 
 
@@ -46,6 +45,10 @@ def test_resources(mocker):
         r.delete(body=delme)
         r.read()
         r.patch()
+        try:
+            r.status()
+        except Exception:
+            pass
 
     assert order == ['my-secrets', 'test-volume']
 
