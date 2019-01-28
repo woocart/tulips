@@ -3,10 +3,11 @@ import re
 import typing as t
 from pathlib import Path
 
-import yaml
+import ruamel.yaml
 from kubernetes import client as k8s
 from kubernetes import config
 from passlib import pwd
+
 from tulips.resource import Resource, ResourceRegistry
 
 
@@ -81,7 +82,7 @@ class Tulip:
         maps.update(self.meta)
         path = Path(self.spec_path).joinpath("templates")
         files = [f for f in path.glob("*.yaml")]
-        sorted(files, key=lambda f: Path(f).stem)
+        files = sorted(files, key=lambda f: str(Path(f).name))
         for res in files:
             base_name = str(res.name)[:-5]  # strip .yaml
             override = res.parent.joinpath(
@@ -91,6 +92,7 @@ class Tulip:
             source_file = override if override.is_file() else res
 
             text = self.prepare(source_file, maps)
+            yaml = ruamel.yaml.YAML()
             for spec in yaml.load_all(text):
                 cls = ResourceRegistry.get_cls(spec["kind"])
 

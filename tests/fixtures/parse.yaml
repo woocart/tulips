@@ -11,3 +11,11 @@ spec:
   resources:
     requests:
       storage: {{ .test.var}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .test.var }}-secrets
+type: Opaque
+data:
+  password: {{ @pwd }}

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from kubernetes import client as k8s
+
 from tulips.tulip import Tulip
 
 
@@ -50,7 +51,7 @@ def test_resources(mocker):
         except Exception:
             pass
 
-    assert order == ['my-secrets', 'test-volume']
+    assert order == ["my-secrets", "test-volume"]
 
 
 def test_parsing(mocker):

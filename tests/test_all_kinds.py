@@ -32,7 +32,7 @@ def test_instance_methods_can_be_called(k8s_client):
 
     try:
         ResourceRegistry.get_cls("Foo")
-    except UndefinedResource as e:
+    except UndefinedResource:
         pass
 
 
