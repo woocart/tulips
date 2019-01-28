@@ -38,10 +38,14 @@ def test_resources(mocker):
     delme = k8s.V1DeleteOptions(
         propagation_policy="Foreground", grace_period_seconds=5
     )
+    order = []
     for r in t.resources():
+        order.append(r.name)
         r.create()
         r.delete(body=delme)
         r.status()
+
+    assert order == ['my-secrets', 'test-volume']
 
 
 def test_parsing(mocker):

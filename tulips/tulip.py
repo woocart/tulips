@@ -81,8 +81,9 @@ class Tulip:
         maps = {"@pwd": lambda: base64.b64encode(pwd.genword(length=24))}
         maps.update(self.meta)
         path = Path(self.spec_path).joinpath("templates")
-
-        for res in path.glob("*.yaml"):
+        files = [f for f in path.glob("*.yaml")]
+        sorted(files, key=lambda f: Path(f).stem)
+        for res in files:
             base_name = str(res.name)[:-5]  # strip .yaml
             override = res.parent.joinpath(
                 "overrides", f"{base_name}.{self.override}.yaml"
