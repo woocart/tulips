@@ -1,3 +1,5 @@
+import sys
+
 import click
 import ruamel.yaml
 import structlog
@@ -126,8 +128,8 @@ def echo(ctx, chart, namespace, release, kubeconfig):
     click.echo(f"### meta={options}")
     client = Tulip(kubeconfig, namespace, options, chart)
     for resource in client.resources():
-        yaml = ruamel.yaml.YAML(typ="safe", pure=True)
-        click.echo(yaml.dump(resource.resource))
+        yaml = ruamel.yaml.YAML(typ="unsafe", pure=True)
+        yaml.dump(resource.resource, sys.stdout)
         click.echo("---")
 
 
