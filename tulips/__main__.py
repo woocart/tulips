@@ -1,6 +1,6 @@
 import click
+import ruamel.yaml
 import structlog
-import yaml
 from kubernetes import client as k8s
 from kubernetes.client.rest import ApiException
 
@@ -126,6 +126,7 @@ def echo(ctx, chart, namespace, release, kubeconfig):
     click.echo(f"### meta={options}")
     client = Tulip(kubeconfig, namespace, options, chart)
     for resource in client.resources():
+        yaml = ruamel.yaml.YAML(typ="safe", pure=True)
         click.echo(yaml.dump(resource.resource))
         click.echo("---")
 

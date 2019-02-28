@@ -92,7 +92,7 @@ class Tulip:
             source_file = override if override.is_file() else res
 
             text = self.prepare(source_file, maps)
-            yaml = ruamel.yaml.YAML()
+            yaml = ruamel.yaml.YAML(typ="safe", pure=True)
             for spec in yaml.load_all(text):
                 cls = ResourceRegistry.get_cls(spec["kind"])
 

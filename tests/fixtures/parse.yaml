@@ -18,4 +18,4 @@ metadata:
   name: {{ .test.var }}-secrets
 type: Opaque
 data:
-  password: {{ @pwd }}
+  password: {{ .test.var }}

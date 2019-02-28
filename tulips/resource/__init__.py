@@ -1,7 +1,7 @@
 import abc
+import typing as t
 
 from kubernetes import client as k8s
-import typing as t
 
 
 class UndefinedResource(Exception):
