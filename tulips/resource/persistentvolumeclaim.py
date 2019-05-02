@@ -35,6 +35,6 @@ class PersistentVolumeClaim(Resource):
     def patch(self):
         return k8s.CoreV1Api(
             self.client
-        ).patch_namespaced_persistent_volume_claim_status(
+        ).patch_namespaced_persistent_volume_claim(
             body=self.resource, name=self.name, namespace=self.namespace
         )

@@ -16,9 +16,7 @@ class CronJob(Resource):
         )
 
     def read(self) -> V1beta1CronJob:
-        return k8s.BatchV1beta1Api(
-            self.client
-        ).read_namespaced_cron_job_status(
+        return k8s.BatchV1beta1Api(self.client).read_namespaced_cron_job(
             name=self.name, namespace=self.namespace
         )
 

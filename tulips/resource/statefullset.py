@@ -26,6 +26,6 @@ class StatefulSet(Resource):
         )
 
     def patch(self) -> V1StatefulSet:
-        return k8s.AppsV1Api(self.client).patch_namespaced_stateful_set_status(
+        return k8s.AppsV1Api(self.client).patch_namespaced_stateful_set(
             body=self.resource, name=self.name, namespace=self.namespace
         )

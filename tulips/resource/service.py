@@ -25,6 +25,6 @@ class Service(Resource):
         )
 
     def patch(self):
-        return k8s.CoreV1Api(self.client).patch_namespaced_service_status(
+        return k8s.CoreV1Api(self.client).patch_namespaced_service(
             body=self.resource, name=self.name, namespace=self.namespace
         )

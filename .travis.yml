@@ -1,6 +1,6 @@
 language: python
 python:
-  - 3.6
+  - 3.7
 sudo: false
 cache:
   pip: true
@@ -15,5 +15,5 @@ before_install:
 install:
 - make install
 script:
-- make test lint
+- make test
 - codecov
