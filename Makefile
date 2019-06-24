@@ -1,6 +1,6 @@
 PACKAGES := tulips tests
 
-hash := $(word 1, $(shell grep -i  content-hash pyproject.lock | shasum))
+hash := $(word 1, $(shell grep -i  content-hash poetry.lock | shasum))
 
 .PHONY: all
 all: install

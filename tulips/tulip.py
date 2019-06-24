@@ -64,11 +64,8 @@ class Tulip:
         Returns:
             k8s.V1NamespaceStatus
         """
-        body = k8s.V1DeleteOptions(
-            propagation_policy="Foreground", grace_period_seconds=5
-        )
         return k8s.CoreV1Api(self.client).delete_namespace(
-            self.namespace, body
+            self.namespace
         )
 
     def resources(self, only_resource=None) -> t.Iterator[Resource]:

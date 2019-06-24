@@ -11,7 +11,7 @@ homepage = "https://github.com/dz0ny/tulips"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-kubernetes = "^7.0"
+kubernetes = "^9.0.0"
 click = "^6.7"
 structlog = "^18.1"
 passlib = "^1.7"

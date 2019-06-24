@@ -21,7 +21,6 @@ def test_delete_namespace(mocker):
     t = Tulip("conf", "my_namespace", {}, "fixtures")
     t.delete_namespace()
     body = api.return_value.call_api.call_args[1]["body"]
-    assert body.propagation_policy == "Foreground"
     assert (
         api.return_value.call_api.call_args[0][0]
         == "/api/v1/namespaces/{name}"
