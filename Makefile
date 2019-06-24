@@ -10,7 +10,6 @@ install: .venv/$(hash)
 .venv/$(hash):
 	poetry config settings.virtualenvs.in-project true
 	poetry install
-	poetry develop
 	@ touch $@
 
 .PHONY: fmt
