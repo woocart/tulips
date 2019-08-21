@@ -118,6 +118,8 @@ class Tulip:
             val = maps[name]
             if name.startswith("@"):
                 val = val()
-            return str(val)
+            val = str(val)
+            val = val.replace("'", "''")  # yaml-escape single quote
+            return val
 
         return re.sub(pattern, replace, text)

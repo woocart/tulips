@@ -57,7 +57,9 @@ def test_parsing(mocker):
     mocker.patch("kubernetes.config.new_client_from_config")
 
     t = Tulip("conf", "my_namespace", {}, "fixtures")
-    out = t.prepare(Path("./tests/fixtures/parse.yaml"), {".test.var": 1234})
+    out = t.prepare(
+        Path("./tests/fixtures/parse.yaml"), {".test.var": "foo'bar"}
+    )
 
     assert ".test.var" not in out
-    assert "1234" in out
+    assert "foo''bar" in out
