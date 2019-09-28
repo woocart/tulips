@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.com/dz0ny/tulips.svg?branch=master)](https://travis-ci.com/dz0ny/tulips)
+[![CircleCI](https://circleci.com/gh/woocart/tulips/tree/master.svg?style=svg&circle-token=631d7a818d7fade30fefe2a23c936d28aaa92ffa)](https://circleci.com/gh/woocart/tulips/tree/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Type checker: mypy](https://img.shields.io/badge/type%20checker-mypy-1F5082.svg)](https://github.com/python/mypy)
 [![Packaging: poetry](https://img.shields.io/badge/packaging-poetry-C2CAFD.svg)](https://poetry.eustace.io/)
 [![Packaging: poetry](https://img.shields.io/badge/packaging-pypi-006dad.svg)](https://pypi.org/project/tulips/)
-[![codecov](https://codecov.io/gh/dz0ny/tulips/branch/master/graph/badge.svg)](https://codecov.io/gh/dz0ny/tulips)
+[![codecov](https://codecov.io/github/woocart/tulips/branch/master/graph/badge.svg)](https://codecov.io/github/woocart/tulips/)
 
 # Tulips
 
