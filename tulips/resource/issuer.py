@@ -6,8 +6,8 @@ from . import Resource
 class Issuer(Resource):
     """A `cert-manager` Issuer resource."""
 
-    version = "v1alpha1"
-    group = "certmanager.k8s.io"
+    version = "v1"
+    group = "cert-manager.io"
     plural = "issuers"
 
     def delete(self, body: k8s.V1DeleteOptions):
