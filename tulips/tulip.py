@@ -6,6 +6,7 @@ from pathlib import Path
 import ruamel.yaml
 from kubernetes import client as k8s
 from kubernetes import config
+from kubernetes.client.models import v1_delete_options
 from passlib import pwd
 
 from tulips.resource import Resource, ResourceRegistry
@@ -64,8 +65,9 @@ class Tulip:
         Returns:
             k8s.V1NamespaceStatus
         """
+        options = v1_delete_options.V1DeleteOptions()
         return k8s.CoreV1Api(self.client).delete_namespace(
-            self.namespace
+            self.namespace, options
         )
 
     def resources(self, only_resource=None) -> t.Iterator[Resource]:

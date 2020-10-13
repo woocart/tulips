@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tulips"
-version = "1.5.3"
+version = "1.5.4"
 description = "Wrapper around kubernetes-clients/python"
 authors = ["Janez Troha <dz0ny@ubuntu.si>"]
 license = "MIT"
@@ -10,12 +10,14 @@ repository = "https://github.com/dz0ny/tulips"
 homepage = "https://github.com/dz0ny/tulips"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8"
 kubernetes = "*"
-click = "^6.7"
+click = ">=6.7"
 structlog = "*"
 passlib = "^1.7"
-"ruamel.yaml" = "^0.15.89"
+# ERROR: regex-2020.11.13-cp38-cp38-manylinux2014_x86_64.whl is not a supported wheel on this platform.
+regex = "==2020.10.11"
+"ruamel.yaml" = ">=0.15.89"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -27,6 +29,7 @@ pylint = "*"
 codecov = "*"
 pytest-cov = "*"
 pytest-mock = "*"
+black = "^20.8b1"
 
 [tool.black]
 line-length = 79
