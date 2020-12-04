@@ -12,3 +12,4 @@ from tulips.resource.resourcequota import ResourceQuota  # noqa: F401
 from tulips.resource.secret import Secret  # noqa: F401
 from tulips.resource.service import Service  # noqa: F401
 from tulips.resource.statefullset import StatefulSet  # noqa: F401
+from tulips.resource.hpa import HorizontalPodAutoscaler  # noqa: F401
