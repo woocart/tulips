@@ -65,9 +65,9 @@ class Tulip:
         Returns:
             k8s.V1NamespaceStatus
         """
-        options = v1_delete_options.V1DeleteOptions()
+
         return k8s.CoreV1Api(self.client).delete_namespace(
-            self.namespace, options
+            self.namespace
         )
 
     def resources(self, only_resource=None) -> t.Iterator[Resource]:
