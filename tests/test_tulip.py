@@ -15,12 +15,23 @@ def test_create_namespace(mocker):
     assert api.return_value.call_api.call_args[0][0] == "/api/v1/namespaces"
 
 
+def test_only_names(mocker):
+    mocker.patch("kubernetes.config.new_client_from_config")
+
+    t = Tulip("conf", "my_namespace", {}, "fixtures")
+    names = []
+
+    for t in t.resources(only_names=["test-volume"]):
+        names.append(t.name)
+    assert names == ["test-volume"]
+
+
 def test_delete_namespace(mocker):
     api = mocker.patch("kubernetes.config.new_client_from_config")
 
     t = Tulip("conf", "my_namespace", {}, "fixtures")
     t.delete_namespace()
-    body = api.return_value.call_api.call_args[1]["body"]
+
     assert (
         api.return_value.call_api.call_args[0][0]
         == "/api/v1/namespaces/{name}"

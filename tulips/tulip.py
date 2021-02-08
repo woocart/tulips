@@ -66,11 +66,11 @@ class Tulip:
             k8s.V1NamespaceStatus
         """
 
-        return k8s.CoreV1Api(self.client).delete_namespace(
-            self.namespace
-        )
+        return k8s.CoreV1Api(self.client).delete_namespace(self.namespace)
 
-    def resources(self, only_resource=None) -> t.Iterator[Resource]:
+    def resources(
+        self, only_resource=None, only_names=None
+    ) -> t.Iterator[Resource]:
         """Deployment specification.
 
         Returns:
@@ -99,7 +99,14 @@ class Tulip:
                 if only_resource and cls not in only_resource:
                     continue
 
-                yield cls(self.client, self.namespace, spec, source_file)
+                # Filter based on internal name
+                if only_names:
+                    if spec["metadata"]["name"] in only_names:
+                        yield cls(
+                            self.client, self.namespace, spec, source_file
+                        )
+                else:
+                    yield cls(self.client, self.namespace, spec, source_file)
 
     def prepare(self, f: Path, maps: dict) -> str:
         """Replace {{}} with values passed from dictionary.
