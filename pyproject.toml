@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tulips"
-version = "1.5.8"
+version = "1.5.9"
 description = "Wrapper around kubernetes-clients/python"
 authors = ["Janez Troha <dz0ny@ubuntu.si>"]
 license = "MIT"
