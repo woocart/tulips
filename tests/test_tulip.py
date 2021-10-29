@@ -61,7 +61,7 @@ def test_resources(mocker):
         except Exception:
             pass
 
-    assert order == ["my-secrets", "test-volume"]
+    assert order == ["my-secrets", "minimal-ingress", "test-volume"]
 
 
 def test_parsing(mocker):

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tulips"
-version = "1.5.9"
+version = "1.5.10"
 description = "Wrapper around kubernetes-clients/python"
 authors = ["Janez Troha <dz0ny@ubuntu.si>"]
 license = "MIT"
@@ -11,7 +11,7 @@ homepage = "https://github.com/dz0ny/tulips"
 
 [tool.poetry.dependencies]
 python = ">=3.6,<4"
-kubernetes = "==12.0.1"
+kubernetes = "==19.15.0"
 click = ">=6.7"
 structlog = "*"
 passlib = "^1.7"
