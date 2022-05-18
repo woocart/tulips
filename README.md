@@ -118,7 +118,7 @@ type: Opaque
 data:
   password: {{ @pwd }}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ release }}-web-ingress
@@ -128,14 +128,22 @@ metadata:
     nginx.ingress.kubernetes.io/limit-connections: "100"
     kubernetes.io/ingress.class: nginx
 spec:
+  defaultBackend:
+    service:
+      name: {{ release }}-web-ingress
+      port:
+        number: 80
   rules:
   - host: {{ domain }}
     http:
       paths:
         - path: /
+          pathType: ImplementationSpecific
           backend:
-            serviceName: {{ release }}-web
-            servicePort: 80
+            service:
+              name: {{ release }}-web
+            port:
+              number: 80
 ```
 
 If one runs `tulip --release test push --kubeconf kube.conf app.yaml domain=test.tld'
