@@ -6,8 +6,10 @@ authors = ["Janez Troha <dz0ny@ubuntu.si>"]
 license = "MIT"
 readme = 'README.md'
 
-repository = "https://github.com/dz0ny/tulips"
-homepage = "https://github.com/dz0ny/tulips"
+repository = "https://github.com/woocart/tulips"
+homepage = "https://github.com/woocart/tulips"
+
+packages = []
 
 [tool.poetry.dependencies]
 python = ">=3.6,<4"
